@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    /* style.css */
+body {
+  font-family: Arial, sans-serif;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+#calculator {
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 15px 15px 5px 5px rgb(49, 48, 48);
+  width: 300px;
+}
+#calculator:hover {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 15px 15px 5px 5px #4f0c89;
+  width: 300px;
+}
+
+#error {
+  color: red;
+  font-size: 20px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+#display {
+  margin-bottom: 20px;
+}
+
+#result {
+  width: 100%;
+  font-size: 20px;
+  padding: 3px;
+  border: 1px solid #ccc;
+  color: #b400f0;
+  border-radius: 5px;
+  text-align: right;
+  
+  border: 3px solid #5c007b;
+}
+
+#buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.btn {
+  padding: 15px;
+  font-size: 18px;
+  border: none;
+  background-color: #4f0c89;
+  color: #fff;
+  border-radius: 52px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: #000000;
+  color: #ff0000;
+}
+
+h1 {
+  text-align: center;
+  color: rgb(98, 13, 147);
+}
+
+.h2 {
+  text-align: center;
+  background-color: rgb(98, 13, 147);
+  color: #fff;
+  padding: 10px;
+  margin-top: 650px;
+  margin-left: -375px;
+  border-radius: 5px;
+}
+
+.h2 a {
+  text-decoration: underline;
+  color: #fff200;
+}
+.h2 a:hover {
+  text-decoration: underline;
+  color: #cb5b00;
+}
+  </style>
+  <title>UM p-1 Basic Calculator</title>
+</head>
+<body>
+  <div id="calculator">
+   <h1>UNIFIED MANTOR <br>
+        CALCULATOR
+   </h1>
+   
+    <div id="display">
+      <input type="text" id="result" dropzone="" />
+    </div>
+    <div id="buttons">
+      <button class="btn" onclick="clearDisplay()">C</button>
+      <button class="btn" onclick="inputValue('/')">/</button>
+      <button class="btn" onclick="inputValue('*')">*</button>
+      <button class="btn" onclick="inputValue('-')">-</button>
+      <button class="btn" onclick="inputValue('7')">7</button>
+      <button class="btn" onclick="inputValue('8')">8</button>
+      <button class="btn" onclick="inputValue('9')">9</button>
+      <button class="btn" onclick="inputValue('+')">+</button>
+      <button class="btn" onclick="inputValue('4')">4</button>
+      <button class="btn" onclick="inputValue('5')">5</button>
+      <button class="btn" onclick="inputValue('6')">6</button>
+      <button class="btn" onclick="calculate()">=</button>
+      <button class="btn" onclick="inputValue('1')">1</button>
+      <button class="btn" onclick="inputValue('2')">2</button>
+      <button class="btn" onclick="inputValue('3')">3</button>
+      <button 
+      class="btn" 
+      onmousedown="startBackspace()" 
+      onmouseup="stopBackspace()" 
+      onmouseleave="stopBackspace()">⌫
+    </button>
+      <button class="btn" onclick="inputValue('.')">.</button>
+      <button class="btn" onclick="inputValue('0')">0</button>
+      
+    </div>
+    <br>
+    <div id="error"></div>
+  </div>
+
+  <h2 class="h2">
+    Project created By <a href="https://www.linkedin.com/in/harshbhayani07/">Harsh Bhayani</a>
+  </h2>
+  <script>
+    // script.js
+const resultInput = document.getElementById('result');
+const errorDiv = document.getElementById('error');
+
+// Function to clear display
+function clearDisplay() {
+  resultInput.value = '';
+  errorDiv.textContent = '';
+}
+
+// Function to add value to the display
+function inputValue(value) {
+  errorDiv.textContent = '';
+  resultInput.value += value;
+}
+
+// Function to calculate the result
+function calculate() {
+  try {
+    const result = eval(resultInput.value);
+    if (result === Infinity || isNaN(result)) {
+      throw new Error('Please enter valid number');
+    }
+    resultInput.value = result;
+  } catch (error) {
+    errorDiv.textContent = error.message || 'Invalid Input';
+  }
+}
+
+// Function to remove the last character (backspace)
+let backspaceInterval; // To store the interval ID
+
+// Function to start clearing characters when backspace is held
+function startBackspace() {
+  backspaceInterval = setInterval(backspace, 100); // Trigger backspace every 100ms
+}
+
+// Function to stop clearing characters when backspace is released
+function stopBackspace() {
+  clearInterval(backspaceInterval); // Clear the interval
+}
+
+// Function to remove the character at the cursor position (backspace)
+function backspace() {
+  errorDiv.textContent = '';
+  const input = resultInput;
+  const cursorPosition = input.selectionStart; // Get the cursor position
+
+  if (cursorPosition > 0) {
+    // Remove the character before the cursor position
+    const beforeCursor = input.value.slice(0, cursorPosition - 1);
+    const afterCursor = input.value.slice(cursorPosition);
+    input.value = beforeCursor + afterCursor;
+
+    // Set the cursor position back to where it was minus one
+    input.setSelectionRange(cursorPosition - 1, cursorPosition - 1);
+  }
+
+  // Ensure the input field keeps focus to maintain the blinking cursor
+  input.focus();
+}
+  </script>
+</body>
+</html>
